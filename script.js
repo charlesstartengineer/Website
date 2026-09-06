@@ -1,61 +1,81 @@
-// Initialize AOS (Animate On Scroll)
-AOS.init({
-    duration: 1000,
-    once: true,
-    offset: 100
-});
+document.addEventListener('DOMContentLoaded', () => {
+  const navbar = document.querySelector('.navbar');
+  const menuToggle = document.querySelector('.menu-toggle');
+  const navLinks = document.querySelector('.nav-links');
+  const navAnchors = [...document.querySelectorAll('.nav-links a')];
+  const sections = [...document.querySelectorAll('main section[id], .site-header#home')];
+  const progress = document.querySelector('#scroll-progress');
+  const form = document.querySelector('#contact-form');
+  const formStatus = document.querySelector('#form-status');
+  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let reducedMotion = reducedMotionQuery.matches;
 
-// Mobile Menu Toggle
-const mobileMenu = document.getElementById('mobile-menu');
-const navMenu = document.querySelector('.nav-menu');
+  const updateNavbar = () => {
+    navbar?.classList.toggle('scrolled', window.scrollY > 24);
+    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    if (progress) progress.style.transform = `scaleX(${scrollable > 0 ? window.scrollY / scrollable : 0})`;
+  };
+  updateNavbar();
+  window.addEventListener('scroll', updateNavbar, { passive: true });
 
-mobileMenu.addEventListener('click', function() {
-    mobileMenu.classList.toggle('active');
-    navMenu.classList.toggle('active');
-});
+  const closeMenu = () => {
+    if (!navLinks || !menuToggle) return;
+    navLinks.classList.remove('is-open');
+    menuToggle.setAttribute('aria-expanded', 'false');
+    menuToggle.setAttribute('aria-label', 'Open navigation menu');
+  };
+  menuToggle?.addEventListener('click', () => {
+    const isOpen = navLinks?.classList.toggle('is-open') ?? false;
+    menuToggle.setAttribute('aria-expanded', String(isOpen));
+    menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+  });
+  document.addEventListener('click', (event) => {
+    if (navLinks?.classList.contains('is-open') && !navLinks.contains(event.target) && !menuToggle?.contains(event.target)) closeMenu();
+  });
+  document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeMenu(); });
 
-// Close menu when clicking a link
-document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', () => {
-        mobileMenu.classList.remove('active');
-        navMenu.classList.remove('active');
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      const selector = link.getAttribute('href');
+      const target = selector ? document.querySelector(selector) : null;
+      if (!target) return;
+      event.preventDefault();
+      target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+      if (navAnchors.includes(link)) closeMenu();
     });
-});
+  });
 
-// Smooth scrolling for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            window.scrollTo({
-                top: target.offsetTop - 70,
-                behavior: 'smooth'
-            });
-        }
-    });
-});
+  const revealItems = document.querySelectorAll('.reveal');
+  if (reducedMotion || !('IntersectionObserver' in window)) revealItems.forEach((item) => item.classList.add('is-visible'));
+  else {
+    const observer = new IntersectionObserver((entries, currentObserver) => entries.forEach((entry) => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); currentObserver.unobserve(entry.target); } }), { threshold: 0.14 });
+    revealItems.forEach((item) => observer.observe(item));
+  }
 
-// Navbar scroll effect
-window.addEventListener('scroll', function() {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 100) {
-        navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-        navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
-    } else {
-        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-        navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+  if ('IntersectionObserver' in window) {
+    const sectionObserver = new IntersectionObserver((entries) => entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      navAnchors.forEach((anchor) => anchor.removeAttribute('aria-current'));
+      const active = navAnchors.find((anchor) => anchor.getAttribute('href') === `#${entry.target.id}`);
+      active?.setAttribute('aria-current', 'page');
+    }), { rootMargin: '-35% 0px -55% 0px', threshold: 0 });
+    sections.forEach((section) => sectionObserver.observe(section));
+  }
+
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (!form.checkValidity()) {
+      form.classList.add('has-errors');
+      formStatus.textContent = 'Please complete the highlighted fields before transmitting.';
+      form.querySelector(':invalid')?.focus();
+      return;
     }
+    const name = new FormData(form).get('name');
+    form.classList.remove('has-errors');
+    formStatus.textContent = `Transmission received, ${name || 'explorer'}! Mission control will be in touch. (Demo only — no message was sent.)`;
+    form.reset();
+    formStatus.focus();
+  });
+  form?.addEventListener('input', () => form.classList.remove('has-errors'));
+  reducedMotionQuery.addEventListener?.('change', (event) => { reducedMotion = event.matches; if (reducedMotion) revealItems.forEach((item) => item.classList.add('is-visible')); });
 });
-
-// Form submission
-const contactForm = document.querySelector('.contact-form');
-if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        // In a real application, you would send the form data to a server here
-        alert('Thank you for your message! We will get back to you soon.');
-        this.reset();
-    });
-}
