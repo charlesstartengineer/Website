@@ -1,227 +1,69 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Landing Page</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Space Explorer maps bold missions, distant worlds, and the questions that move us forward." />
+  <title>Space Explorer | Beyond the Known</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <h2>Brand<span>.</span></h2>
-            </div>
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="#home" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#about" class="nav-link">About</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#services" class="nav-link">Services</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#portfolio" class="nav-link">Portfolio</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#contact" class="nav-link">Contact</a>
-                </li>
-            </ul>
-            <div class="nav-toggle" id="mobile-menu">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
-        </div>
+  <a class="skip-link" href="#main-content">Skip to mission content</a>
+  <div class="stars" aria-hidden="true"></div>
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+  <header class="site-header" id="home">
+    <nav class="navbar" aria-label="Primary navigation">
+      <a class="logo" href="#home" aria-label="Space Explorer home"><span aria-hidden="true">✦</span> SPACE EXPLORER</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-menu" aria-label="Open navigation menu">
+        <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+      </button>
+      <ul class="nav-links" id="primary-menu">
+        <li><a href="#home" aria-current="page">Home</a></li>
+        <li><a href="#about">Mission</a></li>
+        <li><a href="#services">Capabilities</a></li>
+        <li><a href="#portfolio">Discoveries</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-container" data-aos="fade-up" data-aos-duration="1000">
-            <h1 class="hero-title">Welcome to Our Creative Agency</h1>
-            <p class="hero-subtitle">We create stunning digital experiences that captivate and convert</p>
-            <div class="hero-btns">
-                <a href="#services" class="btn primary-btn">Our Services</a>
-                <a href="#contact" class="btn secondary-btn">Get in Touch</a>
-            </div>
-        </div>
+    <section class="hero container reveal" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">MISSION CONTROL <span aria-hidden="true">//</span> 2026</p>
+        <h1 id="hero-title">Go beyond the <span>known.</span></h1>
+        <p class="hero-text">We turn curiosity into trajectories, mapping a future where every horizon is an invitation.</p>
+        <div class="hero-actions"><a class="button button-primary" href="#about">Begin the journey <span aria-hidden="true">→</span></a><a class="text-link" href="#portfolio">View recent discoveries <span aria-hidden="true">↗</span></a></div>
+        <dl class="mission-meta" aria-label="Mission highlights"><div><dt>14</dt><dd>worlds mapped</dd></div><div><dt>∞</dt><dd>questions ahead</dd></div><div><dt>01</dt><dd>shared future</dd></div></dl>
+      </div>
+      <div class="planet-orbit" role="img" aria-label="Illustration of a violet planet orbiting a glowing star">
+        <div class="orbit orbit-one" aria-hidden="true"></div><div class="orbit orbit-two" aria-hidden="true"></div><div class="planet" aria-hidden="true"></div><div class="sun" aria-hidden="true"></div><span class="orbit-label orbit-label-one" aria-hidden="true">ORBIT 01</span><span class="orbit-label orbit-label-two" aria-hidden="true">SIGNAL LOCKED</span>
+      </div>
+    </section>
+  </header>
+
+  <main id="main-content">
+    <section class="section container reveal" id="about" aria-labelledby="about-title">
+      <div class="section-heading"><p class="eyebrow">01 <span aria-hidden="true">//</span> OUR MISSION</p><h2 id="about-title">Curiosity is our <span>compass.</span></h2></div>
+      <div class="two-column"><p class="large-copy">Space is not just somewhere we go. It is a question we keep asking. Our explorers, engineers, and dreamers work together to make the impossible feel like the next logical step.</p><div class="stat-grid"><div class="stat"><strong>14</strong><span>worlds mapped</span></div><div class="stat"><strong>∞</strong><span>questions ahead</span></div><div class="stat"><strong>01</strong><span>shared future</span></div></div></div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="about">
-        <div class="container">
-            <div class="about-content" data-aos="fade-right" data-aos-duration="1000">
-                <h2 class="section-title">About Us</h2>
-                <p class="about-text">We are a team of passionate designers and developers dedicated to creating exceptional digital experiences. With over 10 years of experience in the industry, we help businesses transform their ideas into reality.</p>
-                <p class="about-text">Our approach combines creativity with strategic thinking to deliver solutions that not only look great but also drive results for your business.</p>
-                <a href="#contact" class="btn primary-btn">Learn More</a>
-            </div>
-            <div class="about-image" data-aos="fade-left" data-aos-duration="1000">
-                <!-- Using SVG as placeholder to avoid image dependency issues -->
-                <svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="400" height="300" fill="#3498db"/>
-                    <circle cx="200" cy="150" r="80" fill="#ffffff" opacity="0.2"/>
-                    <rect x="100" y="100" width="200" height="100" rx="10" fill="#ffffff" opacity="0.1"/>
-                    <path d="M150 120 L250 120 L250 180 L150 180 Z" stroke="#ffffff" stroke-width="2" fill="none"/>
-                </svg>
-            </div>
-        </div>
+    <section class="section section-dark reveal" id="services" aria-labelledby="services-title">
+      <div class="container"><div class="section-heading"><p class="eyebrow">02 <span aria-hidden="true">//</span> CAPABILITIES</p><h2 id="services-title">Built for the <span>unknown.</span></h2></div>
+        <div class="card-grid"><article class="feature-card"><div class="card-topline"><div class="card-icon" aria-hidden="true">◉</div><span class="card-index">01</span></div><h3>Orbital Intelligence</h3><p>Read the patterns of planets, moons, and stars to chart smarter routes through the cosmos.</p><a class="card-link" href="#contact">Explore the signal <span aria-hidden="true">→</span></a></article><article class="feature-card"><div class="card-topline"><div class="card-icon" aria-hidden="true">⌁</div><span class="card-index">02</span></div><h3>Deep-Space Systems</h3><p>Design resilient tools and missions that keep working when the signal is light-years away.</p><a class="card-link" href="#contact">Talk to mission control <span aria-hidden="true">→</span></a></article><article class="feature-card"><div class="card-topline"><div class="card-icon" aria-hidden="true">✦</div><span class="card-index">03</span></div><h3>Human Potential</h3><p>Make exploration understandable, welcoming, and meaningful for every curious mind.</p><a class="card-link" href="#contact">Join the conversation <span aria-hidden="true">→</span></a></article></div>
+      </div>
     </section>
 
-    <!-- Services Section -->
-    <section id="services" class="services">
-        <div class="container">
-            <h2 class="section-title" data-aos="fade-up" data-aos-duration="1000">Our Services</h2>
-            <div class="services-grid">
-                <div class="service-item" data-aos="zoom-in" data-aos-duration="1000">
-                    <div class="service-icon">
-                        <i class="fas fa-paint-brush"></i>
-                    </div>
-                    <h3 class="service-title">UI/UX Design</h3>
-                    <p class="service-description">Creating intuitive and engaging user interfaces that provide exceptional user experiences.</p>
-                </div>
-                <div class="service-item" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="100">
-                    <div class="service-icon">
-                        <i class="fas fa-laptop-code"></i>
-                    </div>
-                    <h3 class="service-title">Web Development</h3>
-                    <p class="service-description">Building responsive and performant websites using modern technologies.</p>
-                </div>
-                <div class="service-item" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="200">
-                    <div class="service-icon">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <h3 class="service-title">App Development</h3>
-                    <p class="service-description">Developing cross-platform mobile applications that deliver outstanding performance.</p>
-                </div>
-            </div>
-        </div>
+    <section class="section container reveal" id="portfolio" aria-labelledby="portfolio-title">
+      <div class="section-heading"><p class="eyebrow">03 <span aria-hidden="true">//</span> RECENT DISCOVERIES</p><h2 id="portfolio-title">A universe of <span>possibility.</span></h2></div>
+      <div class="discovery-grid"><article class="discovery discovery-mars"><div><p class="eyebrow">SECTOR 07 <span aria-hidden="true">/</span> TERRAFORMING</p><h3>Red Horizon</h3><p>Dust, ice, and the first steps toward a new kind of home.</p><span class="discovery-tag">FIELD NOTE 07</span></div></article><article class="discovery discovery-nebula"><div><p class="eyebrow">SECTOR 12 <span aria-hidden="true">/</span> ORIGINS</p><h3>Stellar Nursery</h3><p>Where newborn stars turn darkness into color.</p><span class="discovery-tag">LIVE SIGNAL</span></div></article><article class="discovery discovery-moon"><div><p class="eyebrow">SECTOR 01 <span aria-hidden="true">/</span> LUNAR</p><h3>Lunar Signal</h3><p>A familiar neighbor with secrets beneath the surface.</p><span class="discovery-tag">ARCHIVE OPEN</span></div></article></div>
     </section>
 
-    <!-- Portfolio Section -->
-    <section id="portfolio" class="portfolio">
-        <div class="container">
-            <h2 class="section-title" data-aos="fade-up" data-aos-duration="1000">Our Portfolio</h2>
-            <div class="portfolio-grid">
-                <div class="portfolio-item" data-aos="zoom-in" data-aos-duration="1000">
-                    <!-- Using SVG as placeholder to avoid image dependency issues -->
-                    <div class="portfolio-placeholder">
-                        <svg width="300" height="200" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="300" height="200" fill="#3498db"/>
-                            <rect x="50" y="50" width="200" height="100" rx="10" fill="#ffffff" opacity="0.2"/>
-                            <circle cx="150" cy="100" r="30" fill="#ffffff" opacity="0.3"/>
-                        </svg>
-                    </div>
-                    <div class="portfolio-overlay">
-                        <h3 class="portfolio-title">E-commerce Website</h3>
-                        <p class="portfolio-description">Modern online store with seamless shopping experience</p>
-                    </div>
-                </div>
-                <div class="portfolio-item" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="100">
-                    <!-- Using SVG as placeholder to avoid image dependency issues -->
-                    <div class="portfolio-placeholder">
-                        <svg width="300" height="200" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="300" height="200" fill="#e74c3c"/>
-                            <rect x="50" y="50" width="200" height="100" rx="10" fill="#ffffff" opacity="0.2"/>
-                            <circle cx="150" cy="100" r="30" fill="#ffffff" opacity="0.3"/>
-                        </svg>
-                    </div>
-                    <div class="portfolio-overlay">
-                        <h3 class="portfolio-title">Mobile Banking App</h3>
-                        <p class="portfolio-description">Secure and intuitive banking application</p>
-                    </div>
-                </div>
-                <div class="portfolio-item" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="200">
-                    <!-- Using SVG as placeholder to avoid image dependency issues -->
-                    <div class="portfolio-placeholder">
-                        <svg width="300" height="200" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="300" height="200" fill="#9b59b6"/>
-                            <rect x="50" y="50" width="200" height="100" rx="10" fill="#ffffff" opacity="0.2"/>
-                            <circle cx="150" cy="100" r="30" fill="#ffffff" opacity="0.3"/>
-                        </svg>
-                    </div>
-                    <div class="portfolio-overlay">
-                        <h3 class="portfolio-title">Corporate Website</h3>
-                        <p class="portfolio-description">Professional website for a global company</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <section class="section section-contact reveal" id="contact" aria-labelledby="contact-title">
+      <div class="container contact-layout"><div><p class="eyebrow">04 <span aria-hidden="true">//</span> OPEN CHANNEL</p><h2 id="contact-title">Have a question for the <span>universe?</span></h2><p>Send a transmission. This demo channel is open for ideas, questions, and future missions.</p><div class="contact-aside"><span class="status-dot" aria-hidden="true"></span><span>Mission control is listening</span></div></div><form class="contact-form" id="contact-form" novalidate><div class="form-field"><label for="name">Your name</label><input id="name" name="name" type="text" autocomplete="name" required minlength="2" /></div><div class="form-field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" required /></div><div class="form-field"><label for="message">Transmission</label><textarea id="message" name="message" rows="4" required minlength="10"></textarea></div><button class="button button-primary" type="submit">Transmit message <span aria-hidden="true">↗</span></button><p class="form-status" id="form-status" role="status" aria-live="polite" tabindex="-1"></p></form></div>
     </section>
+  </main>
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <h2 class="section-title" data-aos="fade-up" data-aos-duration="1000">Get In Touch</h2>
-            <div class="contact-content">
-                <div class="contact-info" data-aos="fade-right" data-aos-duration="1000">
-                    <h3>Contact Information</h3>
-                    <p>Have a project in mind? Get in touch with us and let's create something amazing together.</p>
-                    <div class="contact-details">
-                        <div class="contact-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>123 Design Street, Creative City</span>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-phone"></i>
-                            <span>+1 (555) 123-4567</span>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-envelope"></i>
-                            <span>info@brand.com</span>
-                        </div>
-                    </div>
-                </div>
-                <form class="contact-form" data-aos="fade-left" data-aos-duration="1000">
-                    <div class="form-group">
-                        <input type="text" placeholder="Your Name" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" placeholder="Your Email" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea placeholder="Your Message" rows="5" required></textarea>
-                    </div>
-                    <button type="submit" class="btn primary-btn">Send Message</button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer id="footer" class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-about">
-                    <h3>Brand<span>.</span></h3>
-                    <p>Creating exceptional digital experiences that captivate and convert.</p>
-                </div>
-                <div class="footer-links">
-                    <a href="#home">Home</a>
-                    <a href="#about">About</a>
-                    <a href="#services">Services</a>
-                    <a href="#portfolio">Portfolio</a>
-                    <a href="#contact">Contact</a>
-                </div>
-                <div class="footer-social">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2023 Brand. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-    <script src="script.js"></script>
+  <footer class="footer"><div class="container footer-inner"><a class="logo" href="#home"><span aria-hidden="true">✦</span> SPACE EXPLORER</a><p>Keep looking up.</p><p>© 2026 Space Explorer</p></div></footer>
+  <script src="script.js" defer></script>
 </body>
 </html>
