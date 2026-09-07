@@ -1,58 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const navbar = document.querySelector('.navbar');
-  const menuToggle = document.querySelector('.menu-toggle');
-  const navLinks = document.querySelector('.nav-links');
-  const form = document.querySelector('#contact-form');
-  const formStatus = document.querySelector('#form-status');
-  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  let reducedMotion = reducedMotionQuery.matches;
+  const navbar = document.querySelector('.navbar'); const menuToggle = document.querySelector('.menu-toggle'); const navLinks = document.querySelector('.nav-links'); const form = document.querySelector('#contact-form'); const formStatus = document.querySelector('#form-status'); const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)'); let reducedMotion = reducedMotionQuery.matches;
+  const updateNavbar = () => navbar.classList.toggle('scrolled', window.scrollY > 24); updateNavbar(); window.addEventListener('scroll', updateNavbar, { passive: true });
+  const scrollPlanets = [...document.querySelectorAll('.scroll-planet')]; let motionFrame = null;
+  const updatePlanetMotion = () => { motionFrame = null; if (reducedMotion) return; const scrollRange = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1); const progress = Math.min(window.scrollY / scrollRange, 1); scrollPlanets.forEach((planet, index) => { const direction = index % 2 === 0 ? 1 : -1; const distance = 90 + index * 28; planet.style.setProperty('--scroll-shift', `${(progress * distance * direction).toFixed(2)}px`); planet.style.setProperty('--scroll-rotate', `${(progress * (index % 2 ? -18 : 24)).toFixed(2)}deg`); }); };
+  const requestPlanetMotion = () => { if (!motionFrame) motionFrame = requestAnimationFrame(updatePlanetMotion); }; window.addEventListener('scroll', requestPlanetMotion, { passive: true }); window.addEventListener('resize', requestPlanetMotion, { passive: true }); const handleMotionPreference = (event) => { reducedMotion = event.matches; if (reducedMotion) scrollPlanets.forEach((planet) => planet.style.removeProperty('--scroll-shift')); else requestPlanetMotion(); }; if (reducedMotionQuery.addEventListener) reducedMotionQuery.addEventListener('change', handleMotionPreference); else reducedMotionQuery.addListener(handleMotionPreference); requestPlanetMotion();
+  const closeMenu = () => { navLinks.classList.remove('is-open'); menuToggle.setAttribute('aria-expanded', 'false'); menuToggle.setAttribute('aria-label', 'Open navigation menu'); }; menuToggle.addEventListener('click', () => { const isOpen = navLinks.classList.toggle('is-open'); menuToggle.setAttribute('aria-expanded', String(isOpen)); menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu'); }); document.querySelectorAll('a[href^="#"]').forEach((link) => link.addEventListener('click', (event) => { const target = document.querySelector(link.getAttribute('href')); if (!target) return; event.preventDefault(); target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' }); closeMenu(); }));
+  const revealItems = document.querySelectorAll('.reveal'); if (reducedMotion) revealItems.forEach((item) => item.classList.add('is-visible')); else if ('IntersectionObserver' in window) { const observer = new IntersectionObserver((entries, currentObserver) => entries.forEach((entry) => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); currentObserver.unobserve(entry.target); } }), { threshold: 0.14 }); revealItems.forEach((item) => observer.observe(item)); } else revealItems.forEach((item) => item.classList.add('is-visible'));
+  form.addEventListener('submit', (event) => { event.preventDefault(); if (!form.checkValidity()) { form.reportValidity(); return; } const data = new FormData(form); const name = String(data.get('name') || 'explorer').trim(); const senderEmail = String(data.get('email') || '').trim(); const message = String(data.get('message') || '').trim(); const subject = `Space Explorer transmission from ${name}`; const body = `Name: ${name}\nEmail: ${senderEmail}\n\nMessage:\n${message}`; window.location.href = `mailto:charliemacallen@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`; formStatus.textContent = 'Your email app should open addressed to charliemacallen@gmail.com. Delivery depends on your email app and provider.'; form.reset(); });
 
-  const updateNavbar = () => navbar.classList.toggle('scrolled', window.scrollY > 24);
-  updateNavbar();
-  window.addEventListener('scroll', updateNavbar, { passive: true });
-
-  const scrollPlanets = [...document.querySelectorAll('.scroll-planet')];
-  let motionFrame = null;
-  const updatePlanetMotion = () => {
-    motionFrame = null;
-    if (reducedMotion) return;
-    const scrollRange = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
-    const progress = Math.min(window.scrollY / scrollRange, 1);
-    scrollPlanets.forEach((planet, index) => {
-      const direction = index % 2 === 0 ? 1 : -1;
-      const distance = 90 + index * 28;
-      planet.style.setProperty('--scroll-shift', `${(progress * distance * direction).toFixed(2)}px`);
-      planet.style.setProperty('--scroll-rotate', `${(progress * (index % 2 ? -18 : 24)).toFixed(2)}deg`);
-    });
-  };
-  const requestPlanetMotion = () => { if (!motionFrame) motionFrame = requestAnimationFrame(updatePlanetMotion); };
-  window.addEventListener('scroll', requestPlanetMotion, { passive: true });
-  window.addEventListener('resize', requestPlanetMotion, { passive: true });
-  const handleMotionPreference = (event) => { reducedMotion = event.matches; if (reducedMotion) scrollPlanets.forEach((planet) => planet.style.removeProperty('--scroll-shift')); else requestPlanetMotion(); };
-  if (reducedMotionQuery.addEventListener) reducedMotionQuery.addEventListener('change', handleMotionPreference); else reducedMotionQuery.addListener(handleMotionPreference);
-  requestPlanetMotion();
-
-  const closeMenu = () => { navLinks.classList.remove('is-open'); menuToggle.setAttribute('aria-expanded', 'false'); menuToggle.setAttribute('aria-label', 'Open navigation menu'); };
-  menuToggle.addEventListener('click', () => { const isOpen = navLinks.classList.toggle('is-open'); menuToggle.setAttribute('aria-expanded', String(isOpen)); menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu'); });
-  document.querySelectorAll('a[href^="#"]').forEach((link) => link.addEventListener('click', (event) => { const target = document.querySelector(link.getAttribute('href')); if (!target) return; event.preventDefault(); target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' }); closeMenu(); }));
-
-  const revealItems = document.querySelectorAll('.reveal');
-  if (reducedMotion) revealItems.forEach((item) => item.classList.add('is-visible'));
-  else if ('IntersectionObserver' in window) { const observer = new IntersectionObserver((entries, currentObserver) => entries.forEach((entry) => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); currentObserver.unobserve(entry.target); } }), { threshold: 0.14 }); revealItems.forEach((item) => observer.observe(item)); }
-  else revealItems.forEach((item) => item.classList.add('is-visible'));
-
-  form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    if (!form.checkValidity()) { form.reportValidity(); return; }
-    const data = new FormData(form);
-    const name = String(data.get('name') || 'explorer').trim();
-    const senderEmail = String(data.get('email') || '').trim();
-    const message = String(data.get('message') || '').trim();
-    const subject = `Space Explorer transmission from ${name}`;
-    const body = `Name: ${name}\nEmail: ${senderEmail}\n\nMessage:\n${message}`;
-    const mailto = `mailto:charliemacallen@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailto;
-    formStatus.textContent = `Your email app should open addressed to charliemacallen@gmail.com. Delivery depends on your email app and provider.`;
-    form.reset();
-  });
+  // Paste only your Supabase project URL and publishable/anon key in the two constants below.
+  const SUPABASE_URL = 'https://ogssderiqjtvykgiokgt.supabase.co';
+  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_DkA2tjFsWFHyBKmuKgW4PQ__s1T93Dn';
+  const authForm = document.querySelector('#auth-form'); const authEmail = document.querySelector('#auth-email'); const authPassword = document.querySelector('#auth-password'); const authStatus = document.querySelector('#auth-status'); const signIn = document.querySelector('#sign-in'); const signUp = document.querySelector('#sign-up'); const resetPassword = document.querySelector('#reset-password'); const logout = document.querySelector('#logout');
+  const configured = !SUPABASE_URL.includes('PASTE_') && !SUPABASE_PUBLISHABLE_KEY.includes('PASTE_');
+  const setAuthStatus = (message, state = '') => { authStatus.textContent = message; authStatus.dataset.state = state; };
+  const setAuthBusy = (busy) => { [signIn, signUp, resetPassword, logout].forEach((button) => { if (button) button.disabled = busy; }); };
+  if (!configured || !window.supabase) { setAuthStatus('Authentication is not configured yet. Add your Supabase project URL and publishable/anon key in script.js.', 'error'); return; }
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+  const updateAuthUI = (session) => { const signedIn = Boolean(session?.user); authPassword.value = ''; signIn.hidden = signedIn; signUp.hidden = signedIn; resetPassword.hidden = signedIn; logout.hidden = !signedIn; authEmail.readOnly = signedIn; setAuthStatus(signedIn ? `Signed in as ${session.user.email}.` : 'Not signed in.', signedIn ? 'success' : ''); };
+  const checkSession = async () => { const { data, error } = await supabase.auth.getSession(); if (error) setAuthStatus(error.message, 'error'); else updateAuthUI(data.session); };
+  supabase.auth.onAuthStateChange((_event, session) => updateAuthUI(session));
+  authForm.addEventListener('submit', async (event) => { event.preventDefault(); if (!authForm.checkValidity()) { authForm.reportValidity(); return; } setAuthBusy(true); setAuthStatus('Signing in…'); const { error } = await supabase.auth.signInWithPassword({ email: authEmail.value.trim(), password: authPassword.value }); setAuthBusy(false); if (error) setAuthStatus(error.message, 'error'); else setAuthStatus('Signed in successfully.', 'success'); });
+  signUp.addEventListener('click', async () => { if (!authEmail.value.trim() || !authPassword.value) { authForm.reportValidity(); return; } setAuthBusy(true); setAuthStatus('Creating your account…'); const { data, error } = await supabase.auth.signUp({ email: authEmail.value.trim(), password: authPassword.value, options: { emailRedirectTo: window.location.href } }); setAuthBusy(false); if (error) setAuthStatus(error.message, 'error'); else setAuthStatus(data.session ? 'Account created and signed in.' : 'Account created. Check your email to confirm it, then sign in.', 'success'); });
+  resetPassword.addEventListener('click', async () => { if (!authEmail.value.trim()) { authEmail.focus(); setAuthStatus('Enter your email address first.', 'error'); return; } setAuthBusy(true); setAuthStatus('Sending password-reset email…'); const { error } = await supabase.auth.resetPasswordForEmail(authEmail.value.trim(), { redirectTo: window.location.href }); setAuthBusy(false); if (error) setAuthStatus(error.message, 'error'); else setAuthStatus('Password-reset email sent. Check your inbox.', 'success'); });
+  logout.addEventListener('click', async () => { setAuthBusy(true); setAuthStatus('Signing out…'); const { error } = await supabase.auth.signOut(); setAuthBusy(false); if (error) setAuthStatus(error.message, 'error'); else setAuthStatus('You are signed out.', 'success'); });
+  checkSession();
 });
